@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 from django.db import models
+import bcrypt
 import re
 
 class RegisterManager(models.Manager):
@@ -31,6 +32,12 @@ class RegisterManager(models.Manager):
             errors["valEmail"]="email should have @ and ."
         if len(postData['password']) < 1:
             errors["password"] = "password cannot be blank"
+        enteredpswd = postData['password']
+        checkUserA = Register.objects.filter(email=postData['email'])
+        if not checkUserA:
+            errors["invalidlogin"] = "Your login is invalid"           
+        elif not (bcrypt.checkpw(enteredpswd.encode(),checkUserA[0].password.encode())):            
+            errors["invalidpassword"] = "Your login is invalid"
         return errors
 
 class Register(models.Model):
