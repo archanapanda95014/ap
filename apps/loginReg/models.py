@@ -40,6 +40,15 @@ class RegisterManager(models.Manager):
             errors["invalidpassword"] = "Your login is invalid"
         return errors
 
+class QuoteManager(models.Manager):
+    def quote_validator(self,postData):
+        errors = {}
+        if len(postData['author']) < 3:
+            errors["author"] = "Author name cannot be less than 3 characters"
+        if len(postData['quote']) < 10:
+            errors["quote"] = "Last name cannot be less than 10 characters"
+        return errors
+
 class Register(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -48,3 +57,11 @@ class Register(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = RegisterManager()
+
+class Quote(models.Model):
+    author = models.CharField(max_length=255)
+    message = models.TextField()
+    uploader = models.ForeignKey(Register, related_name="uploaded_quotes")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    objects = QuoteManager()

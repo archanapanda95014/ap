@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Registration confirmation</title>
+    <title>User welcome page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
     {% load static %}
     <link rel="stylesheet" href="{% static 'loginReg/css/main.css' %}">
@@ -14,6 +14,58 @@
 
 </head>
 <body>
-    <h1>Congratulations ! Welcome {{request.session.first_name}}</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h3>Welcome {{request.session.first_name}}</h3>
+                <h3>Quotes</h3>
+                {% for Quote in allQuotes %} 
+                <table>                             
+                    <tr >
+                        <td>
+                            {{Quote.author}} :
+                        </td>
+                        <td>
+                           "{{Quote.message}}" 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <br><a href="/showUserQuotes/{{Quote.uploader.id}}">Posted by:{{Quote.uploader.first_name}}</a>
+                            <hr>
+                        </td>
+                        <td>
+                        {%  if Quote.uploader.first_name == request.session.first_name %}
+                            | <a href="/delete/{{Quote.id}}">Delete</a>
+                        {%  endif %}
+                        </td>
+                    </tr>  
+                </table>              
+                {%  endfor %}              
+            </div>
+                <div class="col-4">
+                    <h3><a href="/edit/{{request.session.userid}}">Edit account </a> | <a href="/logout">Logout</a></h3>
+                    {% if messages %}
+                    {% for message in messages %}
+                        {% if "quote" in message.tags %}
+                            {{ message }}<br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                        <form method="POST" action="/addQuote">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label>Author:</label>
+                                <input type="text" class="form-control" name="author" placeholder="Enter author name">
+                            </div>
+                            <div class="form-group">
+                                    <label>Quote:</label>
+                                    <textarea class="form-control" name="quote" placeholder="Enter Quote"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Quote</button>  
+                        </form>                    
+            </div>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>User welcome page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'loginReg/css/main.css' %}">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <h3>Welcome {{request.session.first_name}}</h3>        
+                        <form method="POST" action="/updateUser{{upUser.id}}">
+                            {% csrf_token %}
+                        <div>
+                            <label>First Name</label>
+                            <input type="text" class="form-control" name="first_name" value="{{upUser.first_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" class="form-control" name="last_name" value="{{upUser.last_name}}">
+                        </div>
+                        <div class="form-group">
+                            <label>Email address</label>
+                            <input type="text" class="form-control" name="email" value="{{upUser.email}}">
+                        </div>  
+                        <div>
+                            <input type="submit" class="form-control" name="submit" value="submit">
+                        </div> 
+                        </form>   
+                        <h3><a href="/logout">Logout</a> </h3>                 
+            </div>
+        </div>
+    </div>
+</body>
+</html>
