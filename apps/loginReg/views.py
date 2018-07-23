@@ -70,11 +70,10 @@ def logout(request):
     request.session.clear()
     return redirect('/')
 
-def delete(request,num):
+def delete2(request,num):
     a=Quote.objects.get(id=num)
     print("*"*25, a.message)
     a.delete()
-    a.save()
     print("*"*25, a.message)
     return redirect("/quoteDisplay")
 
